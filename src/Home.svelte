@@ -6,11 +6,13 @@
     import DonationDefiler from "./DonationDefiler.svelte";
 
     const url: any = new URL('https://dwcaas.stackhero-network.com/.well-known/mercure');
-    url.searchParams.append('topic', 'https://gala2021.bethrivkah.fr/public/index.php/api/donations/{id}');
+    //@ts-ignore
+    url.searchParams.append('topic', appEnv.env.API_URL + 'api/donations/{id}');
 
     let dons: Donation[] = [];
     let nbDons: number = 0;
     let lastDon: any = null;
+    let youtubeLink: string = "";
     let loading: boolean = true;
     let desktopImg ="/imgs/background.jpg";
     let mobileImg ="/imgs/bandeau-mobile.png";
@@ -38,6 +40,13 @@
         }
     }
 
+    function getContents() {
+        return api(`/api/contents?code=youtubelive2021`)
+            .then(({data}) => {
+                youtubeLink = data["hydra:member"][0].content;
+            })
+    }
+
     function getDonations() {
         return api(`/api/donations`)
             .then(({data}) => {
@@ -50,6 +59,7 @@
 
     onMount(() =>
         {
+            getContents();
             getDonations();
             execMercure();
             window.addEventListener('resize', resize);
@@ -121,26 +131,27 @@
         background.src = imgURL;
     }
 
-
 </script>
 
 <div id="content">
+
     <iframe id="ytPlayer"
             frameborder="0"
             scrolling="no"
             marginheight="0"
             marginwidth="0"
             bind:this={ytPlayer}
-            src="https://www.youtube.com/embed/43gouK9Cd74"
+            src={youtubeLink}
             allowfullscreen
     >
     </iframe>
 
 
+
     <div id="bandeau" bind:this={bandeau}>
         <span class="texts svelte-bti8of" bind:this={fullName}>
             {#if lastDon}
-                 {truncate(lastDon.fullName, 21, "..") + " - " + lastDon.euroAmount + " €"}
+                 {truncate(lastDon.fullName, 20, "..") + " - " + lastDon.euroAmount + " €"}
              {/if}
         </span>
         <!-- <div class="nameLine"></div> -->
@@ -178,7 +189,10 @@
                 src=""
         >
     </div>
+
 </div>
+<a id="footer" href="mailto:gilles@macsimedia.com">Réalisation Macsimedia</a>
+
 
 
 <style>
@@ -234,8 +248,9 @@
         opacity: 0.5;
     }
     .svelte-bti8of {
-        font-size: 2.0vw;
+        font-size: 2vw;
         padding-top: 0.6vw;
+        width: 27vw;
     }
     .nameLine {
         position: absolute;
@@ -252,11 +267,11 @@
         width: 90vw;
         font-size: 1.6vw;
     }
-
     .marquee {
-        height: 1.7vw;
+        height: 1.8vw;
         overflow: hidden;
         position: relative;
+        padding-top: 0.4vw;
     }
 
     .marquee span {
@@ -274,6 +289,17 @@
         -moz-animation: scroll-left 800s linear infinite;
         -webkit-animation: scroll-left 800s linear infinite;
         animation: scroll-left 800s linear infinite;
+    }
+    #footer {
+        position: absolute;
+        bottom: 0;
+        right: 1px;
+        text-align: right;
+        width: 50vw;
+        font-size: 0.7vw;
+        font-style: italic;
+        font-weight: lighter;
+        color: white;
     }
 
     @-webkit-keyframes scroll-left {
@@ -298,9 +324,14 @@
         }
     }
 
+    @media (orientation: landscape) {
+
+    }
+
     @media only screen and (max-width: 640px) {
         .svelte-bti8of {
             font-size: 5vw;
+            width: 60vw;
         }
         .svelte-4m28l7 {
             font-size: 5vw;
@@ -321,6 +352,17 @@
         }
         .marquee {
             height: 3.7vw;
+        }
+        #footer {
+            position: absolute;
+            bottom: 0;
+            right: 1px;
+            text-align: right;
+            width: 50vw;
+            font-size: 1.5vw;
+            font-style: italic;
+            font-weight: lighter;
+            color: white;
         }
     }
 </style>
