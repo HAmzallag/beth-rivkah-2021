@@ -17,6 +17,7 @@
     let desktopImg ="/imgs/background.jpg";
     let mobileImg ="/imgs/bandeau-mobile.png";
 
+    let header;
     let ytPlayer;
     let bandeau;
     let background;
@@ -24,12 +25,6 @@
     let flamme;
     let flammeLogo;
     let button;
-    let marquee;
-    let header;
-
-    let i = 0;
-    let speed = 50;
-    let txt = "";
 
 
     function truncate(str: string, length: number, ending: string = ""){
@@ -65,15 +60,12 @@
             execMercure();
             window.addEventListener('resize', resize);
             window.addEventListener('DOMContentLoaded', resize);
-            window.addEventListener('orientationchange', () => {
-                    location.reload();
-                }
-            );
+            window.addEventListener('orientationchange', () => {location.reload(); });
         }
     )
 
     $: {
-        if(!loading && fullName !== undefined && marquee !== undefined && flammeLogo !== undefined){
+        if(!loading && fullName !== undefined && flammeLogo !== undefined){
             resize();
             flammeLogo.style.opacity = nbDons / 3000;
         }
@@ -112,29 +104,23 @@
         let imgURL = desktopImg;
         fullName.style.top = innerWidth / 80+'px';
         fullName.style.left = innerWidth / 2.38+'px';
-        // nameLine.style.top = innerWidth / 22+'px';
-        // nameLine.style.left = innerWidth / 2.38+'px';
         flamme.style.top = innerWidth / 65+'px';
         flamme.style.left = innerWidth / 1.24+'px';
         flammeLogo.style.top = innerWidth / 90+'px';
         flammeLogo.style.left = innerWidth / 1.315+'px';
         button.style.top = innerWidth / 25+'px';
         button.style.left = innerWidth / 45+'px';
-        marquee.style.top = innerWidth / 14.5+'px';
         if(innerWidth <= 640){
             header.style.display = "block";
             imgURL = mobileImg;
             fullName.style.top = innerWidth / 8+'px';
             fullName.style.left = innerWidth / 4+'px';
-            // nameLine.style.top = innerWidth / 5+'px';
-            // nameLine.style.left = innerWidth / 4+'px';
             flamme.style.top = innerWidth / 3.7+'px';
             flamme.style.left = innerWidth / 4.75+'px';
             flammeLogo.style.top = innerWidth / 3.9+'px';
             flammeLogo.style.left = innerWidth / 9+'px';
             button.style.top = innerWidth / 3.4+'px';
             button.style.left = innerWidth / 1.71+'px';
-            marquee.style.top = innerWidth / 1.95+'px';
         }
         background.src = imgURL;
     }
@@ -180,16 +166,8 @@
                 <img src="/imgs/soutien-btn.png">
             </a>
         </div>
-        <div class="texts svelte-lueg8e"
-             bind:this={marquee}>
-            <div class="marquee">
-                {#if !loading}
-                    <span>
-                        <DonationDefiler donations={dons} />
-                    </span>
-                {/if}
-            </div>
-        </div>
+
+        <DonationDefiler donations={dons} />
 
         <img
                 bind:this={background}
@@ -201,10 +179,7 @@
 </div>
 <a id="footer" href="mailto:gilles@macsimedia.com">Réalisation Macsimedia</a>
 
-
-
 <style>
-
     *{
         margin: 0;
         padding: 0;
@@ -267,43 +242,8 @@
         padding-top: 0.6vw;
         width: 27vw;
     }
-    .nameLine {
-        position: absolute;
-        height: 2px;
-        background: white;
-    }
     .svelte-4m28l7 {
         font-size: 1.6vw;
-    }
-    .svelte-lueg8e{
-        width: 90vw;
-    }
-    .svelte-lueg8e span{
-        width: 90vw;
-        font-size: 1.6vw;
-    }
-    .marquee {
-        height: 1.8vw;
-        overflow: hidden;
-        position: relative;
-        padding-top: 0.4vw;
-    }
-
-    .marquee span {
-        position: absolute;
-        overflow: hidden;
-        width: auto;
-        height: 100%;
-        margin: 0;
-        line-height: 80%;
-        text-align: left;
-        white-space: nowrap;
-        -moz-transform: translateX(0%);
-        -webkit-transform: translateX(0%);
-        transform: translateX(0%);
-        -moz-animation: scroll-left 800s linear infinite;
-        -webkit-animation: scroll-left 800s linear infinite;
-        animation: scroll-left 800s linear infinite;
     }
     #footer {
         position: absolute;
@@ -317,29 +257,6 @@
         color: white;
     }
 
-    @-webkit-keyframes scroll-left {
-        0% {
-            -webkit-transform: translateX(0%);
-        }
-        100% {
-            -webkit-transform: translateX(-100%);
-        }
-    }
-
-    @keyframes scroll-left {
-        0% {
-            -moz-transform: translateX(0%);
-            -webkit-transform: translateX(0%);
-            transform: translateX(0%);
-        }
-        100% {
-            -moz-transform: translateX(-100%);
-            -webkit-transform: translateX(-100%);
-            transform: translateX(-100%);
-        }
-    }
-
-
     @media only screen and (max-width: 640px) {
         .svelte-bti8of {
             font-size: 5vw;
@@ -348,9 +265,6 @@
         .svelte-4m28l7 {
             font-size: 5vw;
         }
-        .svelte-lueg8e{
-            width: 100vw;
-        }
         #flammeLogo{
             position: absolute;
             width: 7vw;
@@ -358,12 +272,6 @@
         }
         #button {
             width: 35vw;
-        }
-        .svelte-lueg8e span{
-            font-size: 3vw;
-        }
-        .marquee {
-            height: 3.7vw;
         }
         #footer {
             position: absolute;
