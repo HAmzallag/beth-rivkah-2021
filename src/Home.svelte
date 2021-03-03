@@ -25,6 +25,7 @@
     let flammeLogo;
     let button;
     let marquee;
+    let header;
 
     let i = 0;
     let speed = 50;
@@ -97,11 +98,17 @@
             ytPlayer.style.height = innerHeight - bandeau.getBoundingClientRect().height+'px';
             ytPlayer.style.width = ytPlayer.getBoundingClientRect().height*1.7777+'px';
         }
-        else if(innerWidth <= 1380){
+        else if(innerWidth <= 1380 && innerWidth > 640){
+            ytPlayer.style.height = innerHeight - bandeau.getBoundingClientRect().height+'px';
+            ytPlayer.style.width = ytPlayer.getBoundingClientRect().height*1.7777+'px';
+        }
+        else if(innerWidth < 640){
+
             ytPlayer.style.width =innerWidth+'px';
             ytPlayer.style.height =innerWidth/1.7777+'px';
         }
 
+        header.style.display = "none";
         let imgURL = desktopImg;
         fullName.style.top = innerWidth / 80+'px';
         fullName.style.left = innerWidth / 2.38+'px';
@@ -115,6 +122,7 @@
         button.style.left = innerWidth / 45+'px';
         marquee.style.top = innerWidth / 14.5+'px';
         if(innerWidth <= 640){
+            header.style.display = "block";
             imgURL = mobileImg;
             fullName.style.top = innerWidth / 8+'px';
             fullName.style.left = innerWidth / 4+'px';
@@ -135,6 +143,9 @@
 
 <div id="content">
 
+    <img src="/imgs/header-mobile-portrait.png" class="header" bind:this={header}>
+
+
     <iframe id="ytPlayer"
             frameborder="0"
             scrolling="no"
@@ -145,9 +156,6 @@
             allowfullscreen
     >
     </iframe>
-
-
-
     <div id="bandeau" bind:this={bandeau}>
         <span class="texts svelte-bti8of" bind:this={fullName}>
             {#if lastDon}
@@ -204,6 +212,13 @@
     #content {
         margin: 0 auto;
         text-align: center;
+    }
+    .header {
+        width: 100vw;
+        height: auto;
+        margin-top: 8vw;
+        margin-bottom: 25vw;
+        display: none;
     }
     #ytPlayer {
         width: 100vw;
@@ -324,9 +339,6 @@
         }
     }
 
-    @media (orientation: landscape) {
-
-    }
 
     @media only screen and (max-width: 640px) {
         .svelte-bti8of {
