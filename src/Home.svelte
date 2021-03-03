@@ -85,22 +85,29 @@
     }
 
     function resize(){
+        header.style.display = "none";
         // nameLine.style.width = fullName.getBoundingClientRect().width+'px';
         if(innerWidth > 1380){
             ytPlayer.style.height = innerHeight - bandeau.getBoundingClientRect().height+'px';
             ytPlayer.style.width = ytPlayer.getBoundingClientRect().height*1.7777+'px';
         }
         else if(innerWidth <= 1380 && innerWidth > 640){
-            ytPlayer.style.height = innerHeight - bandeau.getBoundingClientRect().height+'px';
-            ytPlayer.style.width = ytPlayer.getBoundingClientRect().height*1.7777+'px';
+            if(innerHeight < innerWidth){
+                ytPlayer.style.height = innerHeight - bandeau.getBoundingClientRect().height+'px';
+                ytPlayer.style.width = ytPlayer.getBoundingClientRect().height*1.7777+'px';
+            }else{
+                header.style.display = "block";
+                ytPlayer.style.width =innerWidth+'px';
+                ytPlayer.style.height =innerWidth/1.7777+'px';
+            }
+            console.log("height", innerHeight - bandeau.getBoundingClientRect().height+'px')
+            console.log("width",  ytPlayer.getBoundingClientRect().height*1.7777+'px')
         }
         else if(innerWidth < 640){
-
             ytPlayer.style.width =innerWidth+'px';
             ytPlayer.style.height =innerWidth/1.7777+'px';
         }
 
-        header.style.display = "none";
         let imgURL = desktopImg;
         fullName.style.top = innerWidth / 80+'px';
         fullName.style.left = innerWidth / 2.38+'px';
@@ -145,7 +152,7 @@
     <div id="bandeau" bind:this={bandeau}>
         <span class="texts svelte-bti8of" bind:this={fullName}>
             {#if lastDon}
-                 {truncate(lastDon.fullName, 20, "..") + " - " + lastDon.euroAmount + " €"}
+                 {truncate(lastDon.fullName, 17, "..") + " - " + lastDon.euroAmount + " €"}
              {/if}
         </span>
         <!-- <div class="nameLine"></div> -->
@@ -191,8 +198,8 @@
     .header {
         width: 100vw;
         height: auto;
-        margin-top: 8vw;
-        margin-bottom: 25vw;
+        padding-top: 8vw;
+        margin-bottom: 20vw;
         display: none;
     }
     #ytPlayer {
