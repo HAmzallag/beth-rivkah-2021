@@ -86,24 +86,26 @@
 
     function resize(){
         header.style.display = "none";
-        // nameLine.style.width = fullName.getBoundingClientRect().width+'px';
+
         if(innerWidth > 1380){
             ytPlayer.style.height = innerHeight - bandeau.getBoundingClientRect().height+'px';
             ytPlayer.style.width = ytPlayer.getBoundingClientRect().height*1.7777+'px';
         }
         else if(innerWidth <= 1380 && innerWidth > 640){
             if(innerHeight < innerWidth){
-                ytPlayer.style.height = innerHeight - bandeau.getBoundingClientRect().height+'px';
-                ytPlayer.style.width = ytPlayer.getBoundingClientRect().height*1.7777+'px';
+                 ytPlayer.style.height = innerHeight - bandeau.getBoundingClientRect().height+'px';
+                 ytPlayer.style.width = ytPlayer.getBoundingClientRect().height*1.7777+'px';
+                if(ytPlayer.getBoundingClientRect().height*1.7777 > innerWidth){
+                    ytPlayer.style.width =innerWidth+'px';
+                    ytPlayer.style.height =innerWidth/1.7777+'px';
+                }
             }else{
                 header.style.display = "block";
                 ytPlayer.style.width =innerWidth+'px';
                 ytPlayer.style.height =innerWidth/1.7777+'px';
             }
-            console.log("height", innerHeight - bandeau.getBoundingClientRect().height+'px')
-            console.log("width",  ytPlayer.getBoundingClientRect().height*1.7777+'px')
         }
-        else if(innerWidth < 640){
+        else if(innerWidth <= 640){
             ytPlayer.style.width =innerWidth+'px';
             ytPlayer.style.height =innerWidth/1.7777+'px';
         }
@@ -112,18 +114,20 @@
         fullName.style.top = innerWidth / 80+'px';
         fullName.style.left = innerWidth / 2.38+'px';
         flamme.style.top = innerWidth / 65+'px';
-        flamme.style.left = innerWidth / 1.24+'px';
+        flamme.style.left = innerWidth / 1.25+'px';
         flammeLogo.style.top = innerWidth / 90+'px';
         flammeLogo.style.left = innerWidth / 1.315+'px';
         button.style.top = innerWidth / 25+'px';
         button.style.left = innerWidth / 45+'px';
-        if(innerWidth <= 640){
-            header.style.display = "block";
+        if(innerWidth <= 640 ){
+            if(innerHeight > 600){
+                header.style.display = "block";
+            }
             imgURL = mobileImg;
             fullName.style.top = innerWidth / 8+'px';
             fullName.style.left = innerWidth / 4+'px';
             flamme.style.top = innerWidth / 3.7+'px';
-            flamme.style.left = innerWidth / 4.75+'px';
+            flamme.style.left = innerWidth / 5+'px';
             flammeLogo.style.top = innerWidth / 3.9+'px';
             flammeLogo.style.left = innerWidth / 9+'px';
             button.style.top = innerWidth / 3.4+'px';
@@ -250,6 +254,7 @@
         width: 27vw;
     }
     .svelte-4m28l7 {
+        text-align: center;
         font-size: 1.6vw;
     }
     #footer {
